@@ -10,7 +10,7 @@ namespace Unnamed_Game
 	{
 		static void Main()
 		{
-			Snake snake = new Snake(2, 0, 'O',3);
+			Snake snake = new Snake(9, 0, 'O',10);
 			Console.CursorVisible = false;
 			Console.BufferHeight = Console.WindowHeight;
 			while (true)
@@ -40,7 +40,7 @@ namespace Unnamed_Game
 				}
 				snake.Update();
 				snake.Draw();
-				Thread.Sleep(60);
+				Thread.Sleep(40);
 			}
 		}
 	}
