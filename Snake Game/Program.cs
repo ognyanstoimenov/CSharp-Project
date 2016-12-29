@@ -24,34 +24,34 @@ namespace SnakeGame
 		}
 		static void Main()
 		{
-			Snake snake = new Snake(10, 10, 2);
+			// setup console
 			Console.CursorVisible = false;
 			Console.BufferHeight = Console.WindowHeight;
 
+			Snake snake = new Snake(10, 10, 2);
+			Food food = new Food();
+
 			DrawWalls();
+
+			int ticks = 0;
 			while (true)
 			{
-				if (Console.KeyAvailable)
+				bool isOverFood = false;
+				if ((snake.X == food.X && snake.Y == food.Y) || ticks == 80)
 				{
-					ConsoleKey pressedKey = Console.ReadKey().Key;
-					if (pressedKey == ConsoleKey.UpArrow && snake.Direction != Directions.Down)
+					food.Remove();
+					food = new Food();
+					ticks = 0;
+					if (snake.X == food.X && snake.Y == food.Y)
 					{
-						snake.Direction = Directions.Up;
-					}
-					else if (pressedKey == ConsoleKey.RightArrow && snake.Direction != Directions.Left)
-					{
-						snake.Direction = Directions.Right;
-					}
-					else if (pressedKey == ConsoleKey.DownArrow && snake.Direction != Directions.Up)
-					{
-						snake.Direction = Directions.Down;
-					}
-					else if (pressedKey == ConsoleKey.LeftArrow && snake.Direction != Directions.Right)
-					{
-						snake.Direction = Directions.Left;
+						isOverFood = true;
 					}
 				}
-				snake.Update();
+
+				snake.GetInput();
+				snake.Update(isOverFood);
+
+				ticks++;
 				Thread.Sleep(50);
 			}
 		}
