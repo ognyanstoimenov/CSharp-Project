@@ -5,11 +5,30 @@ namespace SnakeGame
 {
 	class Program
 	{
+		static void DrawWalls()
+		{
+			for (int i = 0; i < Console.BufferWidth - 1; i++)
+			{
+				Console.SetCursorPosition(i, 0);
+				Console.Write('█');
+				Console.SetCursorPosition(i, Console.BufferHeight - 1);
+				Console.Write('█');
+			}
+			for (int i = 0; i < Console.BufferHeight - 1; i++)
+			{
+				Console.SetCursorPosition(0, i);
+				Console.Write('█');
+				Console.SetCursorPosition(Console.BufferWidth - 1, i);
+				Console.Write('█');
+			}
+		}
 		static void Main()
 		{
-			Snake snake = new Snake(9, 0, 10, '█');
+			Snake snake = new Snake(10, 10, 2);
 			Console.CursorVisible = false;
 			Console.BufferHeight = Console.WindowHeight;
+
+			DrawWalls();
 			while (true)
 			{
 				if (Console.KeyAvailable)
@@ -33,8 +52,7 @@ namespace SnakeGame
 					}
 				}
 				snake.Update();
-				snake.Draw();
-				Thread.Sleep(40);
+				Thread.Sleep(50);
 			}
 		}
 	}

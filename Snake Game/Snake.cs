@@ -5,21 +5,19 @@ namespace SnakeGame
 {
 	class Snake
 	{
-		public Snake(int x, int y, int length, char c)
+		public Snake(int x, int y, int length)
 		{
-			Char = c;
 			X = x;
 			Y = y;
 			Direction = Directions.Right;
 			Tail = new List<TailElement>();
 
-			for (int i = 0; i < length; i++)
+			for (int i = X - length; i < X + 1; i++)
 			{
 				Tail.Add(new TailElement(i, y));
 			}
 
 		}
-		public char Char { get; }
 		public int X { get; set; }
 		public int Y { get; set; }
 		public Directions Direction { get; set; }
@@ -29,7 +27,6 @@ namespace SnakeGame
 		{
 			int width = Console.BufferWidth;
 			int height = Console.BufferHeight;
-			Console.Clear();
 			if (Direction == Directions.Up)
 			{
 				Y--;
@@ -50,33 +47,35 @@ namespace SnakeGame
 				X--;
 			}
 
-			if (X >= width)
+			if (X >= width - 1)
 			{
-				X = 0;
+				X = 1;
 			}
-			if (X < 0)
+			if (X < 1)
 			{
-				X = width - 1;
+				X = width - 2;
 			}
-			if (Y < 0)
+			if (Y < 1)
 			{
-				Y = height - 1;
+				Y = height - 2;
 			}
-			if (Y >= height)
+			if (Y >= height - 1)
 			{
-				Y = 0;
+				Y = 1;
 			}
+
+			// Draw
+			Console.SetCursorPosition(Tail[0].X, Tail[0].Y);
+			Console.Write(" ");
 			Tail.RemoveAt(0);
 			Tail.Add(new TailElement(X, Y));
-		}
-		public void Draw()
-		{
-			Console.Clear();
-			for (int i = 0; i < Tail.Count; i++)
+			for (int i = 0; i < Tail.Count - 1; i++)
 			{
 				Console.SetCursorPosition(Tail[i].X, Tail[i].Y);
-				Console.Write(Char);
+				Console.Write('0');
 			}
+			Console.SetCursorPosition(Tail[Tail.Count - 1].X, Tail[Tail.Count - 1].Y);
+			Console.Write('@');
 		}
 	}
 	public enum Directions
@@ -90,8 +89,8 @@ namespace SnakeGame
 	{
 		public TailElement(int x, int y)
 		{
-			this.X = x;
-			this.Y = y;
+			X = x;
+			Y = y;
 		}
 		public int X { get; set; }
 		public int Y { get; set; }
