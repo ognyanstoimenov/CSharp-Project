@@ -10,7 +10,7 @@ namespace Unnamed_Game
 	{
 		static void Main(string[] args)
 		{
-			mimi
+			int mimi = 69 * 420;
 		}
 	}
 }
