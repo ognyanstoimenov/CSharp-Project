@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Unnamed_Game
+namespace SnakeGame
 {
 	class Snake
 	{
-		public Snake(int x, int y, char c,int length)
+		public Snake(int x, int y, int length, char c)
 		{
-			this.SnakeChar = c;
-			this.X = x;
-			this.Y = y;
-			this.Direction = Directions.Right;
-			this.Tail = new List<TailElement>();
+			Char = c;
+			X = x;
+			Y = y;
+			Direction = Directions.Right;
+			Tail = new List<TailElement>();
 
 			for (int i = 0; i < length; i++)
 			{
@@ -22,7 +19,7 @@ namespace Unnamed_Game
 			}
 
 		}
-		public char SnakeChar { get; }
+		public char Char { get; }
 		public int X { get; set; }
 		public int Y { get; set; }
 		public Directions Direction { get; set; }
@@ -78,7 +75,7 @@ namespace Unnamed_Game
 			for (int i = 0; i < Tail.Count; i++)
 			{
 				Console.SetCursorPosition(Tail[i].X, Tail[i].Y);
-				Console.Write(SnakeChar);
+				Console.Write(Char);
 			}
 		}
 	}
@@ -91,7 +88,7 @@ namespace Unnamed_Game
 	}
 	class TailElement
 	{
-		public TailElement(int x,int y)
+		public TailElement(int x, int y)
 		{
 			this.X = x;
 			this.Y = y;
