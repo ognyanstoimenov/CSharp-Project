@@ -10,6 +10,7 @@ namespace Unnamed_Game
 	{
 		static void Main(string[] args)
 		{
+			mimi
 		}
 	}
 }
