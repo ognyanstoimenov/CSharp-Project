@@ -1,0 +1,14 @@
+# Windows
+$RECYCLE.BIN/
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+#Custom
+bin/
+obj/
