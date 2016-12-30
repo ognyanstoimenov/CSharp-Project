@@ -27,7 +27,7 @@ namespace SnakeGame
 		public Directions Direction { get; set; }
 		public List<TailElement> Tail { get; set; }
 		public bool Alive { get; set; }
-		public int Score { get; set; }
+		public static int Score { get; set; }
 
 		public void GetInput()
 		{

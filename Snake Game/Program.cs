@@ -74,6 +74,10 @@ namespace SnakeGame
 					windowHeight / 2 - gameOver.Length + i);
 				Console.Write(gameOver[i]);
 			}
+			string scoreString = string.Format($"Score: {Snake.Score}");
+			Console.SetCursorPosition(windowWidth / 2 - scoreString.Length / 2, windowHeight / 2);
+			Console.WriteLine(scoreString);
+
 		}
 
 		static void Main()
@@ -92,7 +96,7 @@ namespace SnakeGame
 				if (snake.X == food.X && snake.Y == food.Y)
 				{
 					isOverFood = true;
-					snake.Score++;
+					Snake.Score++;
 					food = new Food();
 					ticks = 0;
 				}
