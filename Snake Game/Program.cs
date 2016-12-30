@@ -91,11 +91,8 @@ namespace SnakeGame
 				bool isOverFood = false;
 				if (snake.X == food.X && snake.Y == food.Y)
 				{
-					if (snake.X == food.X && snake.Y == food.Y)
-					{
-						isOverFood = true;
-						snake.Score++;
-					}
+					isOverFood = true;
+					snake.Score++;
 					food = new Food();
 					ticks = 0;
 				}
