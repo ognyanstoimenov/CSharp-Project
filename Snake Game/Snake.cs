@@ -12,7 +12,7 @@ namespace SnakeGame
 			Direction = Directions.Right;
 			Tail = new List<TailElement>();
 			Alive = true;
-			for (int i = X - length; i < X + 1; i++)
+			for (int i = X - length + 1; i < X + 1; i++)
 			{
 				Tail.Add(new TailElement(i, y));
 			}
@@ -28,7 +28,7 @@ namespace SnakeGame
 		{
 			if (Console.KeyAvailable)
 			{
-				ConsoleKey pressedKey = Console.ReadKey().Key;
+				ConsoleKey pressedKey = Console.ReadKey(true).Key;
 				if (pressedKey == ConsoleKey.UpArrow && Direction != Directions.Down)
 				{
 					Direction = Directions.Up;
@@ -85,7 +85,7 @@ namespace SnakeGame
 			}
 
 			// Draw
-			if (isOverFood == false)
+			if (!isOverFood)
 			{
 				Console.SetCursorPosition(Tail[0].X, Tail[0].Y);
 				Console.Write(" ");
