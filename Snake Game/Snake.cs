@@ -11,7 +11,7 @@ namespace SnakeGame
 			Y = y;
 			Direction = Directions.Right;
 			Tail = new List<TailElement>();
-
+			Alive = true;
 			for (int i = X - length; i < X + 1; i++)
 			{
 				Tail.Add(new TailElement(i, y));
@@ -22,6 +22,7 @@ namespace SnakeGame
 		public int Y { get; set; }
 		public Directions Direction { get; set; }
 		public List<TailElement> Tail { get; set; }
+		public bool Alive { get; set; }
 
 		public void GetInput()
 		{
@@ -69,21 +70,9 @@ namespace SnakeGame
 				X--;
 			}
 
-			if (X >= width - 1)
+			if (X >= width - 1 || X < 1 || Y < 1 || Y >= height - 1)
 			{
-				X = 1;
-			}
-			if (X < 1)
-			{
-				X = width - 2;
-			}
-			if (Y < 1)
-			{
-				Y = height - 2;
-			}
-			if (Y >= height - 1)
-			{
-				Y = 1;
+				Alive = false;
 			}
 
 			// Draw
@@ -103,6 +92,8 @@ namespace SnakeGame
 			Console.Write('@');
 		}
 	}
+
+
 	public enum Directions
 	{
 		Up,
@@ -110,6 +101,7 @@ namespace SnakeGame
 		Down,
 		Left
 	}
+
 	class TailElement
 	{
 		public TailElement(int x, int y)
