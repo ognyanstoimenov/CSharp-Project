@@ -15,17 +15,19 @@ namespace SnakeGame
 			Direction = Directions.Right;
 			Tail = new List<TailElement>();
 			Alive = true;
+			Score = 0;
+
 			for (int i = X - length + 1; i < X + 1; i++)
 			{
 				Tail.Add(new TailElement(i, y));
 			}
-
 		}
 		public int X { get; set; }
 		public int Y { get; set; }
 		public Directions Direction { get; set; }
 		public List<TailElement> Tail { get; set; }
 		public bool Alive { get; set; }
+		public int Score { get; set; }
 
 		public void GetInput()
 		{
@@ -89,6 +91,7 @@ namespace SnakeGame
 			if (!isOverFood)
 			{
 				Console.SetCursorPosition(Tail[0].X, Tail[0].Y);
+				Console.BackgroundColor = Program.fieldColor;
 				Console.Write(' ');
 				Tail.RemoveAt(0);
 			}
@@ -99,6 +102,12 @@ namespace SnakeGame
 				Console.ForegroundColor = color;
 				Console.Write(drawChar);
 			}
+
+			// Show score
+			Console.SetCursorPosition(Program.fieldWidth + 1, 0);
+			Console.BackgroundColor = ConsoleColor.Black;
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.Write($"Score: {Score}");
 		}
 	}
 

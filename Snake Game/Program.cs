@@ -4,13 +4,16 @@ using System.Threading;
 namespace SnakeGame
 {
 	class Program
-	{ 
-		public static int fieldWidth = 60;
-		public static int fieldHeight = 25;
-		public static int windowWidth = 80;
-		public static int windowHeight = fieldHeight;
-		public static ConsoleColor fieldColor = ConsoleColor.DarkGreen;
-		public static ConsoleColor wallColor = ConsoleColor.White;
+	{
+		public const int frameTime = 60;
+		public const int fieldWidth = 60;
+		public const int fieldHeight = 25;
+		public const int windowWidth = 80;
+		public const int windowHeight = fieldHeight;
+		public const ConsoleColor fieldColor = ConsoleColor.DarkGreen;
+		public const ConsoleColor wallColor = ConsoleColor.White;
+
+		public static DateTime startTime = DateTime.Now;
 
 		static void SetupConsole()
 		{
@@ -23,6 +26,15 @@ namespace SnakeGame
 			Console.WindowWidth = Console.BufferWidth;
 			Console.WindowHeight = Console.BufferHeight;
 			Console.Clear();
+			for (int i = fieldWidth; i < windowWidth; i++)
+			{
+				for (int j = 0; j < windowHeight; j++)
+				{
+					Console.SetCursorPosition(i, j);
+					Console.BackgroundColor = ConsoleColor.Black;
+					Console.Write(' ');
+				}
+			}
 		}
 		static void DrawWalls()
 		{
@@ -47,6 +59,14 @@ namespace SnakeGame
 		{
 
 		}
+		static void UpdateTime()
+		{
+			TimeSpan time = DateTime.Now - startTime;
+			Console.SetCursorPosition(fieldWidth + 1, 3);
+			Console.BackgroundColor = ConsoleColor.Black;
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.Write($"Time: {time.Minutes:00}:{(time.Seconds):00}");
+		}
 
 		static void Main()
 		{
@@ -55,33 +75,32 @@ namespace SnakeGame
 			Snake snake = new Snake(10, 10, 9);
 			Food food = new Food();
 
-			DrawWalls();
-
 			int ticks = 0;
 			while (snake.Alive)
 			{
 				bool isOverFood = false;
-				if ((snake.X == food.X && snake.Y == food.Y) || ticks == 80)
+				if (snake.X == food.X && snake.Y == food.Y)
 				{
 					if (snake.X == food.X && snake.Y == food.Y)
 					{
 						isOverFood = true;
+						snake.Score++;
 					}
-					food.Remove();
 					food = new Food();
 					ticks = 0;
 				}
 
 				snake.GetInput();
 				snake.Update(isOverFood);
+				food.Update();
+				DrawWalls();
+				UpdateTime();
 
 				ticks++;
-				if(snake.Direction == Directions.Up || snake.Direction == Directions.Down)
-				{
-					Thread.Sleep(70);
-				}
+				if (snake.Direction == Directions.Up || snake.Direction == Directions.Down)
+					Thread.Sleep(frameTime);
 				else
-				Thread.Sleep(50);
+					Thread.Sleep((int)(frameTime * 0.7));
 			}
 			FinalScreen();
 		}
