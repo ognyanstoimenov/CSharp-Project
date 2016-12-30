@@ -87,7 +87,7 @@ namespace SnakeGame
 			}
 
 			// Draw
-			if (!isOverFood)
+			if (isOverFood == false)
 			{
 				Console.SetCursorPosition(Tail[0].X, Tail[0].Y);
 				Console.Write(" ");

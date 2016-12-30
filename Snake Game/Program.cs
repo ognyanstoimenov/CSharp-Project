@@ -39,13 +39,13 @@ namespace SnakeGame
 				bool isOverFood = false;
 				if ((snake.X == food.X && snake.Y == food.Y) || ticks == 80)
 				{
-					food.Remove();
-					food = new Food();
-					ticks = 0;
 					if (snake.X == food.X && snake.Y == food.Y)
 					{
 						isOverFood = true;
 					}
+					food.Remove();
+					food = new Food();
+					ticks = 0;
 				}
 
 				snake.GetInput();
