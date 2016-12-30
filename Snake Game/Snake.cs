@@ -69,10 +69,19 @@ namespace SnakeGame
 			{
 				X--;
 			}
-
+			
+			// Death
 			if (X >= width - 1 || X < 1 || Y < 1 || Y >= height - 1)
 			{
 				Alive = false;
+			}
+
+			for (int i = 0; i < Tail.Count; i++)
+			{
+				if (X == Tail[i].X && Y == Tail[i].Y)
+				{
+					Alive = false;
+				}
 			}
 
 			// Draw
