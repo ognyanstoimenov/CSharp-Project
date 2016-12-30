@@ -4,8 +4,8 @@ namespace SnakeGame
 {
 	class Food
 	{
-		private char drawChar = '■';
-		private ConsoleColor color = ConsoleColor.Magenta;
+		private const char drawChar = '■';
+		private const ConsoleColor color = ConsoleColor.Magenta;
 
 		public Food()
 		{

@@ -13,7 +13,6 @@ namespace SnakeGame
 		public const ConsoleColor fieldColor = ConsoleColor.DarkGreen;
 		public const ConsoleColor wallColor = ConsoleColor.White;
 
-		public static DateTime startTime = DateTime.Now;
 
 		static void SetupConsole()
 		{
@@ -55,11 +54,7 @@ namespace SnakeGame
 				Console.Write(drawChar);
 			}
 		}
-		static void FinalScreen()
-		{
-
-		}
-		static void UpdateTime()
+		static void UpdateTime(DateTime startTime)
 		{
 			TimeSpan time = DateTime.Now - startTime;
 			Console.SetCursorPosition(fieldWidth + 1, 3);
@@ -68,12 +63,27 @@ namespace SnakeGame
 			Console.Write($"Time: {time.Minutes:00}:{(time.Seconds):00}");
 		}
 
+		static void GameOverScreen()
+		{
+			string[] gameOver = ASCIIArt.gameOver.Split('\n');
+			Console.Clear();
+			for (int i = 0; i < gameOver.Length; i++)
+			{
+				Console.SetCursorPosition(
+					windowWidth / 2 - gameOver[i].Length / 2,
+					windowHeight / 2 - gameOver.Length + i);
+				Console.Write(gameOver[i]);
+			}
+		}
+
 		static void Main()
 		{
 			SetupConsole();
 
 			Snake snake = new Snake(10, 10, 9);
 			Food food = new Food();
+		
+			DateTime startTime = DateTime.Now;
 
 			int ticks = 0;
 			while (snake.Alive)
@@ -94,7 +104,7 @@ namespace SnakeGame
 				snake.Update(isOverFood);
 				food.Update();
 				DrawWalls();
-				UpdateTime();
+				UpdateTime(startTime);
 
 				ticks++;
 				if (snake.Direction == Directions.Up || snake.Direction == Directions.Down)
@@ -102,7 +112,7 @@ namespace SnakeGame
 				else
 					Thread.Sleep((int)(frameTime * 0.7));
 			}
-			FinalScreen();
+			GameOverScreen();
 		}
 	}
 }

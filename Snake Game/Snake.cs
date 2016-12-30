@@ -5,8 +5,8 @@ namespace SnakeGame
 {
 	class Snake
 	{
-		private char drawChar = '█';
-		private ConsoleColor color = ConsoleColor.Black;
+		private const char drawChar = '█';
+		private const ConsoleColor color = ConsoleColor.Black;
 
 		public Snake(int x, int y, int length)
 		{
