@@ -5,13 +5,13 @@ namespace SnakeGame
 	class Food
 	{
 		private const char drawChar = '■';
-		private const ConsoleColor color = ConsoleColor.Magenta;
+		private const ConsoleColor color = ConsoleColor.Red;
 
 		public Food()
 		{
 			Random rnd = new Random();
-			X = rnd.Next(1, Program.fieldWidth - 1);
-			Y = rnd.Next(1, Program.fieldHeight - 1);
+			X = rnd.Next(1, Game.fieldWidth - 1);
+			Y = rnd.Next(1, Game.fieldHeight - 1);
 		}
 
 		public int X { get; set; }
@@ -20,7 +20,7 @@ namespace SnakeGame
 		public void Update()
 		{
 			Console.SetCursorPosition(X, Y);
-			Console.BackgroundColor = Program.fieldColor;
+			Console.BackgroundColor = Game.fieldColor;
 			Console.ForegroundColor = color;
 			Console.Write(drawChar);
 		}

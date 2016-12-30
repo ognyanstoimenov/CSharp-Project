@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="ASCIIArt.cs" />
     <Compile Include="Food.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Snake.cs" />
   </ItemGroup>

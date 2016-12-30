@@ -74,7 +74,7 @@ namespace SnakeGame
 			}
 			
 			// Death
-			if (X >= Program.fieldWidth - 1 || X < 1 || Y < 1 || Y >= Program.fieldHeight - 1)
+			if (X >= Game.fieldWidth - 1 || X < 1 || Y < 1 || Y >= Game.fieldHeight - 1)
 			{
 				Alive = false;
 			}
@@ -91,7 +91,7 @@ namespace SnakeGame
 			if (!isOverFood)
 			{
 				Console.SetCursorPosition(Tail[0].X, Tail[0].Y);
-				Console.BackgroundColor = Program.fieldColor;
+				Console.BackgroundColor = Game.fieldColor;
 				Console.Write(' ');
 				Tail.RemoveAt(0);
 			}
@@ -104,7 +104,7 @@ namespace SnakeGame
 			}
 
 			// Show score
-			Console.SetCursorPosition(Program.fieldWidth + 1, 0);
+			Console.SetCursorPosition(Game.fieldWidth + 1, 0);
 			Console.BackgroundColor = ConsoleColor.Black;
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.Write($"Score: {Score}");
