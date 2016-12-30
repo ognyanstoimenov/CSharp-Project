@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SnakeGame
 {
 	class Food
 	{
+		private char drawChar = '■';
+		private ConsoleColor color = ConsoleColor.Blue;
+
 		public Food()
 		{
 			Random rnd = new Random();
-			X = rnd.Next(1, Console.BufferWidth - 1);
-			Y = rnd.Next(1, Console.BufferHeight - 1);
+			X = rnd.Next(1, Program.fieldWidth - 1);
+			Y = rnd.Next(1, Program.fieldHeight - 1);
 			Console.SetCursorPosition(X, Y);
-			Console.Write('f');
+			Console.ForegroundColor = color;
+			Console.Write(drawChar);
 		}
 
 		public int X { get; set; }

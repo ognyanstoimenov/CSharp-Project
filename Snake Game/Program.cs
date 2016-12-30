@@ -4,33 +4,53 @@ using System.Threading;
 namespace SnakeGame
 {
 	class Program
-	{
+	{ 
+		public static int fieldWidth = 60;
+		public static int fieldHeight = 25;
+		public static int windowWidth = 80;
+		public static int windowHeight = fieldHeight;
+		public static ConsoleColor fieldColor = ConsoleColor.DarkGreen;
+		public static ConsoleColor wallColor = ConsoleColor.White;
+
+		static void SetupConsole()
+		{
+			Console.CursorVisible = false;
+			Console.BackgroundColor = fieldColor;
+			Console.WindowHeight = windowHeight;
+			Console.WindowWidth = windowWidth;
+			Console.BufferHeight = Console.WindowHeight;
+			Console.BufferWidth = Console.WindowWidth;
+			Console.WindowWidth = Console.BufferWidth;
+			Console.WindowHeight = Console.BufferHeight;
+			Console.Clear();
+		}
+		static void DrawWalls()
+		{
+			char drawChar = '█';
+			Console.ForegroundColor = wallColor;
+			for (int i = 0; i < fieldWidth; i++)
+			{
+				Console.SetCursorPosition(i, 0);
+				Console.Write(drawChar);
+				Console.SetCursorPosition(i, fieldHeight - 1);
+				Console.Write(drawChar);
+			}
+			for (int i = 0; i < fieldHeight; i++)
+			{
+				Console.SetCursorPosition(0, i);
+				Console.Write(drawChar);
+				Console.SetCursorPosition(fieldWidth - 1, i);
+				Console.Write(drawChar);
+			}
+		}
 		static void FinalScreen()
 		{
 
 		}
-		static void DrawWalls()
-		{
-			for (int i = 0; i < Console.BufferWidth - 1; i++)
-			{
-				Console.SetCursorPosition(i, 0);
-				Console.Write('█');
-				Console.SetCursorPosition(i, Console.BufferHeight - 1);
-				Console.Write('█');
-			}
-			for (int i = 0; i < Console.BufferHeight - 1; i++)
-			{
-				Console.SetCursorPosition(0, i);
-				Console.Write('█');
-				Console.SetCursorPosition(Console.BufferWidth - 1, i);
-				Console.Write('█');
-			}
-		}
+
 		static void Main()
 		{
-			// setup console
-			Console.CursorVisible = false;
-			Console.BufferHeight = Console.WindowHeight;
+			SetupConsole();
 
 			Snake snake = new Snake(10, 10, 9);
 			Food food = new Food();

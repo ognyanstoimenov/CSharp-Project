@@ -5,6 +5,9 @@ namespace SnakeGame
 {
 	class Snake
 	{
+		private char drawChar = '█';
+		private ConsoleColor color = ConsoleColor.Black;
+
 		public Snake(int x, int y, int length)
 		{
 			X = x;
@@ -50,8 +53,6 @@ namespace SnakeGame
 
 		public void Update(bool isOverFood)
 		{
-			int width = Console.BufferWidth;
-			int height = Console.BufferHeight;
 			// Moving
 			if (Direction == Directions.Up)
 			{
@@ -71,7 +72,7 @@ namespace SnakeGame
 			}
 			
 			// Death
-			if (X >= width - 1 || X < 1 || Y < 1 || Y >= height - 1)
+			if (X >= Program.fieldWidth - 1 || X < 1 || Y < 1 || Y >= Program.fieldHeight - 1)
 			{
 				Alive = false;
 			}
@@ -88,17 +89,16 @@ namespace SnakeGame
 			if (!isOverFood)
 			{
 				Console.SetCursorPosition(Tail[0].X, Tail[0].Y);
-				Console.Write(" ");
+				Console.Write(' ');
 				Tail.RemoveAt(0);
 			}
 			Tail.Add(new TailElement(X, Y));
-			for (int i = 0; i < Tail.Count - 1; i++)
+			for (int i = 0; i < Tail.Count; i++)
 			{
 				Console.SetCursorPosition(Tail[i].X, Tail[i].Y);
-				Console.Write('0');
+				Console.ForegroundColor = color;
+				Console.Write(drawChar);
 			}
-			Console.SetCursorPosition(Tail[Tail.Count - 1].X, Tail[Tail.Count - 1].Y);
-			Console.Write('@');
 		}
 	}
 
