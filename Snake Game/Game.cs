@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Threading;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace SnakeGame
 {
@@ -13,8 +16,10 @@ namespace SnakeGame
 		public const ConsoleColor fieldColor = ConsoleColor.DarkGreen;
 		public const ConsoleColor wallColor = ConsoleColor.White;
 
+		public static string highScorePath = Environment.CurrentDirectory + "\\highscores.txt";
 		private static DateTime startTime;
 		private static TimeSpan time;
+		private static List<string> highScores;
 
 		static void SetupConsole()
 		{
@@ -58,17 +63,26 @@ namespace SnakeGame
 		}
 		static void UpdateTimeAndScore()
 		{
-			// Update Time
-			time = DateTime.Now - startTime;
-			Console.SetCursorPosition(fieldWidth + 1, 3);
-			Console.BackgroundColor = ConsoleColor.Black;
-			Console.ForegroundColor = ConsoleColor.White;
-			Console.Write($"Time: {time.Minutes:00}:{(time.Seconds):00}");
 			// Update score
 			Console.SetCursorPosition(fieldWidth + 1, 0);
 			Console.BackgroundColor = ConsoleColor.Black;
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.Write($"Score: {Snake.Score}");
+			// Update Time
+			time = DateTime.Now - startTime;
+			Console.SetCursorPosition(fieldWidth + 1, 2);
+			Console.BackgroundColor = ConsoleColor.Black;
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.Write($"Time: {time.Minutes:00}:{(time.Seconds):00}");
+			// High scores
+			Console.SetCursorPosition(fieldWidth + 1, 4);
+			Console.Write("High scores:");
+			for (int i = 0; i < highScores.Count; i++)
+			{
+				Console.SetCursorPosition(fieldWidth + 1, i + 5);
+				Console.Write(highScores[i]);
+			}
+
 		}
 		static void GameOverScreen()
 		{
@@ -121,11 +135,41 @@ namespace SnakeGame
 				}
 			}
 		}
+		static void GetHighScores()
+		{
+			if (File.Exists(highScorePath))
+			{
+				highScores = new List<string>(File.ReadAllLines(highScorePath));
+			}
+			else
+			{
+				File.Create(highScorePath);
+				highScores = new List<string>();
+			}
+		}
+		static void SaveHighScores()
+		{
+			int index = -1;
+			for (int i = 0; i < highScores.Count; i++)
+			{
+				int currentValue = int.Parse(highScores[i].Split('-')[1]);
+				if (Snake.Score >= currentValue)
+				{
+					index = i;
+					break;
+				}
+			}
+			if (index > -1)
+			{
+				highScores.Insert(index, "MEME-" + Snake.Score.ToString());
+				File.WriteAllLines(highScorePath, highScores.ToArray());
+			}
+		}
 
 		static void Main()
 		{
+			GetHighScores();
 			SetupConsole();
-
 			Snake snake = new Snake(10, 10, 9);
 			Food food = new Food();
 
@@ -152,6 +196,7 @@ namespace SnakeGame
 				else
 					Thread.Sleep((int)(frameTime * 0.7));
 			}
+			SaveHighScores();
 			GameOverScreen();
 		}
 	}
