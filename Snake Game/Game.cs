@@ -103,15 +103,15 @@ namespace SnakeGame
 			{
 				// Underline selected
 				Console.SetCursorPosition(btnsX, btnsY + 1);
-				Console.Write(new string(selected == 0 ? '-': ' ', btns[0].Length));
+				Console.Write(new string(selected == 0 ? '-' : ' ', btns[0].Length));
 				Console.SetCursorPosition(btnsX + btns[0].Length + 5, btnsY + 1);
 				Console.Write(new string(selected == 1 ? '-' : ' ', btns[1].Length));
 				// Change selection
 				ConsoleKey pressedKey = Console.ReadKey(true).Key;
 				if (pressedKey == ConsoleKey.RightArrow)
-					selected++;
+					selected = 1;
 				else if (pressedKey == ConsoleKey.LeftArrow)
-					selected--;
+					selected = 0;
 				else if (pressedKey == ConsoleKey.Enter || pressedKey == ConsoleKey.Spacebar)
 				{
 					if (selected == 0)
@@ -119,7 +119,6 @@ namespace SnakeGame
 					else
 						return;
 				}
-				selected = Math.Abs(selected) % 2;
 			}
 		}
 
