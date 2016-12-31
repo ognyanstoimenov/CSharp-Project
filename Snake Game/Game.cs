@@ -102,12 +102,10 @@ namespace SnakeGame
 			while (true)
 			{
 				// Underline selected
-				char b0 = selected == 0 ? '-' : ' ';
-				char b1 = selected == 1 ? '-' : ' ';
 				Console.SetCursorPosition(btnsX, btnsY + 1);
-				Console.Write(new string(b0, btns[0].Length));
+				Console.Write(new string(selected == 0 ? '-': ' ', btns[0].Length));
 				Console.SetCursorPosition(btnsX + btns[0].Length + 5, btnsY + 1);
-				Console.Write(new string(b1, btns[1].Length));
+				Console.Write(new string(selected == 1 ? '-' : ' ', btns[1].Length));
 				// Change selection
 				ConsoleKey pressedKey = Console.ReadKey(true).Key;
 				if (pressedKey == ConsoleKey.RightArrow)
@@ -136,16 +134,16 @@ namespace SnakeGame
 
 			while (snake.Alive)
 			{
-				bool isOverFood = false;
+				snake.OverFood = false;
 				if (snake.X == food.X && snake.Y == food.Y)
 				{
 					Snake.Score++;
-					isOverFood = true;
+					snake.OverFood = true;
 					food = new Food();
 				}
 
 				snake.GetInput();
-				snake.Update(isOverFood);
+				snake.Update();
 				food.Update();
 				DrawWalls();
 				UpdateTimeAndScore();

@@ -16,6 +16,7 @@ namespace SnakeGame
 			Tail = new List<TailElement>();
 			Alive = true;
 			Score = 0;
+			OverFood = false;
 
 			for (int i = X - length + 1; i < X + 1; i++)
 			{
@@ -27,6 +28,8 @@ namespace SnakeGame
 		public Directions Direction { get; set; }
 		public List<TailElement> Tail { get; set; }
 		public bool Alive { get; set; }
+		public bool OverFood { get; set; }
+
 		public static int Score { get; set; }
 
 		public void GetInput()
@@ -52,27 +55,18 @@ namespace SnakeGame
 				}
 			}
 		}
-
-		public void Update(bool isOverFood)
+		public void Update()
 		{
 			// Moving
 			if (Direction == Directions.Up)
-			{
 				Y--;
-			}
 			if (Direction == Directions.Right)
-			{
 				X++;
-			}
 			if (Direction == Directions.Down)
-			{
 				Y++;
-			}
 			if (Direction == Directions.Left)
-			{
 				X--;
-			}
-			
+
 			// Death
 			if (X >= Game.fieldWidth - 1 || X < 1 || Y < 1 || Y >= Game.fieldHeight - 1)
 			{
@@ -88,7 +82,7 @@ namespace SnakeGame
 			}
 
 			// Draw
-			if (!isOverFood)
+			if (!OverFood)
 			{
 				Console.SetCursorPosition(Tail[0].X, Tail[0].Y);
 				Console.BackgroundColor = Game.fieldColor;
@@ -104,7 +98,6 @@ namespace SnakeGame
 			}
 		}
 	}
-
 
 	public enum Directions
 	{
