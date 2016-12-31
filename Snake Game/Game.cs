@@ -12,6 +12,8 @@ namespace SnakeGame
 		public const int windowHeight = fieldHeight;
 		public const ConsoleColor fieldColor = ConsoleColor.DarkGreen;
 		public const ConsoleColor wallColor = ConsoleColor.White;
+
+		private static DateTime startTime;
 		private static TimeSpan time;
 
 		static void SetupConsole()
@@ -54,19 +56,26 @@ namespace SnakeGame
 				Console.Write(drawChar);
 			}
 		}
-		static void UpdateTime(DateTime startTime)
+		static void UpdateTimeAndScore()
 		{
+			// Update Time
 			time = DateTime.Now - startTime;
 			Console.SetCursorPosition(fieldWidth + 1, 3);
 			Console.BackgroundColor = ConsoleColor.Black;
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.Write($"Time: {time.Minutes:00}:{(time.Seconds):00}");
+			// Update score
+			Console.SetCursorPosition(fieldWidth + 1, 0);
+			Console.BackgroundColor = ConsoleColor.Black;
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.Write($"Score: {Snake.Score}");
 		}
-
 		static void GameOverScreen()
 		{
-			string[] gameOver = ASCIIArt.gameOver.Split('\n');
+			// Show last frame
+			Thread.Sleep(600);
 			Console.Clear();
+			string[] gameOver = ASCIIArt.gameOver.Split('\n');
 			for (int i = 0; i < gameOver.Length; i++)
 			{
 				Console.SetCursorPosition(
@@ -79,8 +88,41 @@ namespace SnakeGame
 			Console.Write(scoreString);
 			string timeString = string.Format($"Time Alive: {time.Minutes:00}:{(time.Seconds):00}");
 			Console.SetCursorPosition(windowWidth / 2 - timeString.Length / 2 - 1, windowHeight / 2 + 1);
-			Console.WriteLine(timeString);
+			Console.Write(timeString);
 
+			// Buttons
+			string[] btns = { "Play Again", "Exit" };
+			int btnsX = windowWidth / 2 - (btns[0].Length + 5 + btns[0].Length) / 2;
+			int btnsY = windowHeight / 2 + 4;
+			int selected = 0;
+			Console.SetCursorPosition(btnsX, btnsY);
+			Console.Write(btns[0]);
+			Console.Write(new string(' ', 5));
+			Console.Write(btns[1]);
+			while (true)
+			{
+				// Underline selected
+				char b0 = selected == 0 ? '-' : ' ';
+				char b1 = selected == 1 ? '-' : ' ';
+				Console.SetCursorPosition(btnsX, btnsY + 1);
+				Console.Write(new string(b0, btns[0].Length));
+				Console.SetCursorPosition(btnsX + btns[0].Length + 5, btnsY + 1);
+				Console.Write(new string(b1, btns[1].Length));
+				// Change selection
+				ConsoleKey pressedKey = Console.ReadKey(true).Key;
+				if (pressedKey == ConsoleKey.RightArrow)
+					selected++;
+				else if (pressedKey == ConsoleKey.LeftArrow)
+					selected--;
+				else if (pressedKey == ConsoleKey.Enter || pressedKey == ConsoleKey.Spacebar)
+				{
+					if (selected == 0)
+						Main();
+					else
+						return;
+				}
+				selected = Math.Abs(selected) % 2;
+			}
 		}
 
 		static void Main()
@@ -89,27 +131,25 @@ namespace SnakeGame
 
 			Snake snake = new Snake(10, 10, 9);
 			Food food = new Food();
-			DateTime startTime = DateTime.Now;
 
-			int ticks = 0;
+			startTime = DateTime.Now;
+
 			while (snake.Alive)
 			{
 				bool isOverFood = false;
 				if (snake.X == food.X && snake.Y == food.Y)
 				{
-					isOverFood = true;
 					Snake.Score++;
+					isOverFood = true;
 					food = new Food();
-					ticks = 0;
 				}
 
 				snake.GetInput();
 				snake.Update(isOverFood);
 				food.Update();
 				DrawWalls();
-				UpdateTime(startTime);
+				UpdateTimeAndScore();
 
-				ticks++;
 				if (snake.Direction == Directions.Up || snake.Direction == Directions.Down)
 					Thread.Sleep(frameTime);
 				else

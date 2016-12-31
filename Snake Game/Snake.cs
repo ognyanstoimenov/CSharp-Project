@@ -102,12 +102,6 @@ namespace SnakeGame
 				Console.ForegroundColor = color;
 				Console.Write(drawChar);
 			}
-
-			// Show score
-			Console.SetCursorPosition(Game.fieldWidth + 1, 0);
-			Console.BackgroundColor = ConsoleColor.Black;
-			Console.ForegroundColor = ConsoleColor.White;
-			Console.Write($"Score: {Score}");
 		}
 	}
 
