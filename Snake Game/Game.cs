@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace SnakeGame
 {
@@ -15,8 +14,8 @@ namespace SnakeGame
 		public const int windowHeight = fieldHeight;
 		public const ConsoleColor fieldColor = ConsoleColor.DarkGreen;
 		public const ConsoleColor wallColor = ConsoleColor.White;
+		public static readonly string highScorePath = Environment.CurrentDirectory + "\\highscores.txt";
 
-		public static string highScorePath = Environment.CurrentDirectory + "\\highscores.txt";
 		private static DateTime startTime;
 		private static TimeSpan time;
 		private static List<string> highScores;
@@ -87,7 +86,7 @@ namespace SnakeGame
 		static void GameOverScreen()
 		{
 			// Show last frame
-			Thread.Sleep(600);
+			Thread.Sleep(750);
 			Console.Clear();
 			string[] gameOver = ASCIIArt.gameOver.Split('\n');
 			for (int i = 0; i < gameOver.Length; i++)
@@ -168,8 +167,9 @@ namespace SnakeGame
 
 		static void Main()
 		{
-			GetHighScores();
 			SetupConsole();
+
+			GetHighScores();
 			Snake snake = new Snake(10, 10, 9);
 			Food food = new Food();
 
@@ -177,6 +177,11 @@ namespace SnakeGame
 
 			while (snake.Alive)
 			{
+				DateTime nextFrame = DateTime.Now.AddMilliseconds(
+					snake.Direction == Directions.Up || snake.Direction == Directions.Down ?
+						frameTime : frameTime * 0.7
+				);
+
 				snake.OverFood = false;
 				if (snake.X == food.X && snake.Y == food.Y)
 				{
@@ -185,18 +190,13 @@ namespace SnakeGame
 					food = new Food();
 				}
 
-				snake.GetInput();
+				snake.GetInput(nextFrame);
 				snake.Update();
 				food.Update();
 				DrawWalls();
 				UpdateTimeAndScore();
-
-				if (snake.Direction == Directions.Up || snake.Direction == Directions.Down)
-					Thread.Sleep(frameTime);
-				else
-					Thread.Sleep((int)(frameTime * 0.7));
 			}
-			SaveHighScores();
+			//SaveHighScores();
 			GameOverScreen();
 		}
 	}

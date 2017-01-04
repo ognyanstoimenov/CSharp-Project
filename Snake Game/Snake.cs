@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace SnakeGame
 {
@@ -32,27 +33,40 @@ namespace SnakeGame
 
 		public static int Score { get; set; }
 
-		public void GetInput()
+		public void GetInput(DateTime nextFrame)
 		{
-			if (Console.KeyAvailable)
+			Directions nextDirection = Directions.NoChange;
+			// Prevent the snake from getting stuck when holding down a key. 
+			// Allows for multiple inputs per frame - only the last one is used.
+			while (nextFrame >= DateTime.Now)
 			{
-				ConsoleKey pressedKey = Console.ReadKey(true).Key;
-				if (pressedKey == ConsoleKey.UpArrow && Direction != Directions.Down)
+				if (Console.KeyAvailable)
 				{
-					Direction = Directions.Up;
+					ConsoleKey pressedKey = Console.ReadKey(true).Key;
+					if (pressedKey == ConsoleKey.UpArrow && Direction != Directions.Down)
+					{
+						nextDirection = Directions.Up;
+					}
+					else if (pressedKey == ConsoleKey.RightArrow && Direction != Directions.Left)
+					{
+						nextDirection = Directions.Right;
+					}
+					else if (pressedKey == ConsoleKey.DownArrow && Direction != Directions.Up)
+					{
+						nextDirection = Directions.Down;
+					}
+					else if (pressedKey == ConsoleKey.LeftArrow && Direction != Directions.Right)
+					{
+						nextDirection = Directions.Left;
+					}
 				}
-				else if (pressedKey == ConsoleKey.RightArrow && Direction != Directions.Left)
-				{
-					Direction = Directions.Right;
-				}
-				else if (pressedKey == ConsoleKey.DownArrow && Direction != Directions.Up)
-				{
-					Direction = Directions.Down;
-				}
-				else if (pressedKey == ConsoleKey.LeftArrow && Direction != Directions.Right)
-				{
-					Direction = Directions.Left;
-				}
+				// Check for input every 5ms
+				Thread.Sleep(5);
+			}
+			// Prevent coliding with yourself if you chnage directions twice in one frame
+			if (nextDirection != Directions.NoChange)
+			{
+				Direction = nextDirection;
 			}
 		}
 		public void Update()
@@ -101,13 +115,14 @@ namespace SnakeGame
 
 	public enum Directions
 	{
+		NoChange,
 		Up,
 		Right,
 		Down,
 		Left
 	}
 
-	class TailElement
+	struct TailElement
 	{
 		public TailElement(int x, int y)
 		{
