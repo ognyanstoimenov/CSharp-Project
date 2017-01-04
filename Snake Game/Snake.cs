@@ -35,7 +35,7 @@ namespace SnakeGame
 
 		public void GetInput(DateTime nextFrame)
 		{
-			Directions nextDirection = Directions.NoChange;
+			Directions nextDirection = Direction;
 			// Prevent the snake from getting stuck when holding down a key. 
 			// Allows for multiple inputs per frame - only the last one is used.
 			while (nextFrame >= DateTime.Now)
@@ -63,11 +63,7 @@ namespace SnakeGame
 				// Check for input every 5ms
 				Thread.Sleep(5);
 			}
-			// Prevent coliding with yourself if you chnage directions twice in one frame
-			if (nextDirection != Directions.NoChange)
-			{
-				Direction = nextDirection;
-			}
+			Direction = nextDirection;
 		}
 		public void Update()
 		{
@@ -115,7 +111,6 @@ namespace SnakeGame
 
 	public enum Directions
 	{
-		NoChange,
 		Up,
 		Right,
 		Down,
